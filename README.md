@@ -17,21 +17,19 @@ This project demonstrates **CRUD operations** on a `User` model, with support fo
 
 ## Project Structure    
 
-go-restapi/
-│── go.mod
-│── go.sum
-│── main.go
-│
-├── config/
-│ └── sqldb.go # Database connection logic
-│
-├── models/
-│ └── user.go # User model
-│
-├── controllers/
-│ └── user_controller.go # CRUD logic
-│
-└── routes/
+go-restapi/           
+│── go.mod          
+│── go.sum         
+│── main.go           
+│        
+├── config/       
+│ └── sqldb.go # Database connection logic         
+│        
+├── models/       
+│ └── user.go # User model          
+│       
+├── controllers/          
+│ └── user_controller.go # CRUD logic         
+│           
+└── routes/          
 └── user_routes.go # API route definitions         
-
-
