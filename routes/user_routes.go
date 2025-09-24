@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"myapp/controllers"
+	"github.com/mkumar2307/go-restapi/controllers"
 
 	"github.com/gin-gonic/gin"
 )
