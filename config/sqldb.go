@@ -4,12 +4,15 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"runtime"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/driver/sqlserver"
 	"gorm.io/gorm"
+
+	_ "modernc.org/sqlite" // Go SQLite driver for Windows
 )
 
 var DB *gorm.DB
@@ -45,8 +48,22 @@ func ConnectDatabase() {
 		dialector = mysql.Open(dsn)
 
 	case "sqlite":
-		dsn = os.Getenv("DB_NAME") // e.g. "test.db"
-		dialector = sqlite.Open(dsn)
+		dbName := os.Getenv("DB_NAME")
+		if dbName == "" {
+			log.Fatal("DB_NAME environment variable is required for SQLite")
+		}
+
+		if runtime.GOOS == "windows" {
+			// Use Go driver on Windows to avoid CGO issues
+			database, err := gorm.Open(sqlite.Open(dbName), &gorm.Config{})
+			if err != nil {
+				log.Fatal("Failed to connect to SQLite (Windows):", err)
+			}
+			DB = database
+		} else {
+			// For other OSes, normal SQLite driver
+			dialector = sqlite.Open(dbName)
+		}
 
 	case "sqlserver":
 		dsn = fmt.Sprintf(
